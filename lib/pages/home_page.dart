@@ -51,20 +51,40 @@ class _HomePageState extends State<HomePage> {
       dateTime: DateTime.now(),
     );
     Provider.of<ExpenseData>(context, listen: false).addNewExpense(newExpense);
+
+    Navigator.pop(context);
+    clear();
   }
 
   //cancel
-  void cancel() {}
+  void cancel() {
+    Navigator.pop(context);
+    clear();
+  }
+
+  //clear controllers
+  void clear() {
+    newExpenseNameController.clear();
+    newExpenseAmountController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      floatingActionButton: FloatingActionButton(
-        onPressed: addNewExpense,
-        child: Icon(Icons.add),
+    return Consumer<ExpenseData>(
+      builder: (context, value, child) => Scaffold(
+        backgroundColor: Colors.grey[300],
+        floatingActionButton: FloatingActionButton(
+          onPressed: addNewExpense,
+          child: Icon(Icons.add),
+        ),
+        body: ListView.builder(
+          itemCount: value.getAllExpenseList().length,
+          itemBuilder: (context, index) =>
+              ListTile(
+                title: Text(value.getAllExpenseList()[index].name)
+                ),
+        ),
       ),
-      body:ListView.builder(itemBuilder: (context,index)=> ListTile(title:Text()), ),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/expense_item.dart';
 
-class ExpenseData extends ChangeNotifier{
+class ExpenseData extends ChangeNotifier {
   //List of All expenses
   List<ExpenseItem> overallExpenseList = [];
 
@@ -16,11 +16,15 @@ class ExpenseData extends ChangeNotifier{
   //add new expense
   void addNewExpense(ExpenseItem newExpense) {
     overallExpenseList.add(newExpense);
+
+    notifyListeners();
   }
 
   //delete expense
   void deleteExpense(ExpenseItem expense) {
     overallExpenseList.remove(expense);
+
+    notifyListeners();
   }
 
   //get weekday (mon,tues,etc) from a dateTime object
@@ -52,7 +56,7 @@ class ExpenseData extends ChangeNotifier{
     //get todays date
     DateTime today = DateTime.now();
 
-    //go backwards from today to fund sunday
+    //go backwards from today to find sunday
     for (int i = 0; i < 7; i++) {
       if (getDayName(today.subtract(Duration(days: i))) == 'Sun') {
         startofWeek = today.subtract(Duration(days: i));
@@ -81,7 +85,9 @@ class ExpenseData extends ChangeNotifier{
   DailyExpenseSummary=
   [
     [2023/01/30: $25],
-    [2023/01/31: $30]
+    [2023/01/31: $30],
+    [2023/02/01: $30],
+    [2023/02/03: $30],
   ]
   */
 
