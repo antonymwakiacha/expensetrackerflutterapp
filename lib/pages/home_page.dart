@@ -1,3 +1,5 @@
+import 'package:expensetrackerapp/components/expense_summary.dart';
+import 'package:expensetrackerapp/components/expense_tile.dart';
 import 'package:expensetrackerapp/data/expense_data.dart';
 import 'package:expensetrackerapp/models/expense_item.dart';
 import 'package:flutter/material.dart';
@@ -72,19 +74,29 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<ExpenseData>(
       builder: (context, value, child) => Scaffold(
-        backgroundColor: Colors.grey[300],
-        floatingActionButton: FloatingActionButton(
-          onPressed: addNewExpense,
-          child: Icon(Icons.add),
-        ),
-        body: ListView.builder(
-          itemCount: value.getAllExpenseList().length,
-          itemBuilder: (context, index) =>
-              ListTile(
-                title: Text(value.getAllExpenseList()[index].name)
+          backgroundColor: Colors.grey[300],
+          floatingActionButton: FloatingActionButton(
+            onPressed: addNewExpense,
+            child: Icon(Icons.add),
+          ),
+          body: ListView(
+            children: [
+              //weekly summary
+              ExpenseSummary(startOfWeek: value.startofweekDate()),
+
+              //expense list
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: value.getAllExpenseList().length,
+                itemBuilder: (context, index) => ExpenseTile(
+                  name: value.getAllExpenseList()[index].name,
+                  amount: value.getAllExpenseList()[index].amount,
+                  dateTime: value.getAllExpenseList()[index].dateTime,
                 ),
-        ),
-      ),
+              ),
+            ],
+          )),
     );
   }
 }
